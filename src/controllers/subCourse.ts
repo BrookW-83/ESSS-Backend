@@ -83,3 +83,17 @@ export const getAllSubCourses = async (
     next(error);
   }
 };
+
+//get subCourses by course
+export const getSubCourses = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const subCourses = await SubCouse.find({ courseID: req.params.courseId });
+    res.status(200).json(subCourses);
+  } catch (error) {
+    next(error);
+  }
+};
