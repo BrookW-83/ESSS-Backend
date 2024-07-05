@@ -7,6 +7,10 @@ const ModuleSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    part: {
+      type: Number,
+      required: true,
+    },
     description: {
       type: String,
       required: true,
