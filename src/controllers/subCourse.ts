@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import SubCouse from "../models/SubCouse";
 import { createError } from "../error";
+import Course from "../models/Course";
 
 interface CustomRequest extends Request {
   params: any;
@@ -15,8 +16,17 @@ export const createSubCourse = (
   next: NextFunction
 ) => {
   const subCourse = new SubCouse(req.body);
+
   try {
     subCourse.save();
+    // update course to have subCourse
+    if (subCourse) {
+      Course.findByIdAndUpdate(
+        subCourse?.courseID,
+        { $push: { subCourses: subCourse._id } },
+        { new: true }
+      );
+    }
     res.status(201).json("SubCourse has been created");
   } catch (error) {
     next(error);
@@ -46,6 +56,12 @@ export const deleteSubCourse = async (
 ) => {
   try {
     const subCourse = await SubCouse.findById(req.params.id);
+    // delete subCourse from course
+    Course.findByIdAndUpdate(
+      subCourse?.courseID,
+      { $pull: { subCourses: subCourse?._id } },
+      { new: true }
+    );
     if (!subCourse) return next(createError("SubCourse not found", 404));
     await SubCouse.findByIdAndDelete(req.params.id);
     res.status(200).json("SubCourse has been deleted");
