@@ -7,6 +7,10 @@ const SubCourseSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    part: {
+      type: Number,
+      required: true,
+    },
     courseID: {
       type: String,
       required: true,
@@ -29,7 +33,7 @@ const SubCourseSchema = new mongoose.Schema(
     },
   },
 
-  { timestamps: true },
+  { timestamps: true }
 );
 
 export default mongoose.model("SubCourse", SubCourseSchema);
