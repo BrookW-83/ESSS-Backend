@@ -19,6 +19,7 @@ declare global {
 }
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 dotenv.config();
@@ -51,3 +52,6 @@ app.use((err: any, req: any, res: any, next: any) => {
 app.listen(8000, () => {
   console.log("Server is running on port 8000");
 });
+function cors(): any {
+  throw new Error("Function not implemented.");
+}
