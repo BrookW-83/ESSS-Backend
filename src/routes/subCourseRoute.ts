@@ -16,7 +16,7 @@ router.post("/create", verifyToken, createSubCourse);
 router.get("/find/:id", getSubCourse);
 router.put("/:id", verifyToken, updateSubCourse);
 router.delete("/:id", verifyToken, deleteSubCourse);
-router.get("/getAllCourses", getAllSubCourses);
+router.get("/getAllSubCourses", getAllSubCourses);
 router.get("/getSubCourses/:courseId", getSubCourses);
 
 export default router;
