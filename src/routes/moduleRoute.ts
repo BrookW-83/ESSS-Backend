@@ -13,6 +13,8 @@ const router = express.Router();
 
 // get all modules
 router.get("/all", getAllModules);
+// get a modult of subCourse
+router.get("/getModules/:subCourseId", getModule);
 // get a module by id
 router.get("/find/:id", getModule);
 // create a module

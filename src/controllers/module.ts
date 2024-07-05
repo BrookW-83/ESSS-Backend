@@ -20,6 +20,19 @@ export const getAllModules = async (
     next(error);
   }
 };
+//get all modules of a subCourse
+export const getModules = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const modules = await Module.find({ subCourseId: req.params.subCourseId });
+    res.status(200).json(modules);
+  } catch (error) {
+    next(error);
+  }
+};
 // // get a module by id
 export const getModule = async (
   req: CustomRequest,
