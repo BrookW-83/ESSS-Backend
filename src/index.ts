@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import userRoute from "./routes/userRoute";
 import subCourseRoute from "./routes/subCourseRoute";
+import corsMiddleware from "cors";
 import moduleRoute from "./routes/moduleRoute";
 import courseRoute from "./routes/courseRoute";
 import quizRoute from "./routes/quizRoute";
@@ -19,7 +20,7 @@ declare global {
 }
 
 const app = express();
-app.use(cors());
+app.use(corsMiddleware());
 app.use(express.json());
 app.use(cookieParser());
 dotenv.config();

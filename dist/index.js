@@ -14,6 +14,7 @@ const courseRoute_1 = __importDefault(require("./routes/courseRoute"));
 const quizRoute_1 = __importDefault(require("./routes/quizRoute"));
 const authRoute_1 = __importDefault(require("./routes/authRoute"));
 const app = (0, express_1.default)();
+app.use(cors());
 app.use(express_1.default.json());
 app.use((0, cookie_parser_1.default)());
 dotenv_1.default.config();
@@ -43,3 +44,6 @@ app.use((err, req, res, next) => {
 app.listen(8000, () => {
     console.log("Server is running on port 8000");
 });
+function cors() {
+    throw new Error("Function not implemented.");
+}
