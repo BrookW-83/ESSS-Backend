@@ -116,11 +116,15 @@ export const searchCourse = async (
   next: NextFunction
 ) => {
   try {
-    const query = req.query.q;
-    const courses = await Course.find({
-      title: { $regex: String(query), $options: "i" },
-    }).limit(20);
-    res.status(200).json(courses);
+    const query = req.query.title;
+
+    const courses = await Course.find().limit(20);
+    const filteredCourses = courses.filter((course) =>
+      course.title
+        .toLowerCase()
+        .includes(query ? query.toString().toLowerCase() : "")
+    );
+    res.status(200).json(filteredCourses);
   } catch (error) {
     next(error);
   }

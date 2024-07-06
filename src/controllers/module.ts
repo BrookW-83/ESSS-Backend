@@ -107,11 +107,15 @@ export const searchModule = async (
   next: NextFunction
 ) => {
   try {
-    const query = req.query.q;
-    const module = await Module.find({
-      title: { $regex: query, $options: "i" },
-    }).limit(20);
-    res.status(200).json(module);
+    const query = req.query.title;
+
+    const allModules = await Module.find();
+    const filteredModule = allModules.filter((module) =>
+      module.title
+        .toLowerCase()
+        .includes(query ? query.toString().toLowerCase() : "")
+    );
+    res.status(200).json(filteredModule);
   } catch (error) {
     next(error);
   }
