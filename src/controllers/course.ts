@@ -84,7 +84,11 @@ export const allCourses = async (
   next: NextFunction
 ) => {
   try {
-    const courses = await Course.find();
+    const sortField = req.query.sort || "part";
+    const sortOrder = req.query.order === "desc" ? -1 : 1; // default to ascending order
+    const courses = await Course.find().sort({
+      [sortField.toString()]: sortOrder,
+    });
     res.status(200).json(courses);
   } catch (error) {
     next(error);
@@ -101,8 +105,12 @@ export const categoryCourses = async (
     const category = req.query.category
       ? (req.query.category as string).split(",")
       : [];
-    const courses = await Course.find({ category: { $in: category } });
-    console.log(category, courses);
+    const sortField = req.query.sort || "title";
+    const sortOrder = req.query.order === "desc" ? -1 : 1; // default to ascending order
+    const courses = await Course.find({ category: { $in: category } }).sort({
+      [sortField.toString()]: sortOrder,
+    });
+
     res.status(200).json(courses);
   } catch (error) {
     next(error);
