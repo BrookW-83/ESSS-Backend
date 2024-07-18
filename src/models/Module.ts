@@ -1,5 +1,10 @@
 import mongoose from "mongoose";
 
+const ReadingMaterialSchema = new mongoose.Schema({
+  title: { type: String, required: true },
+  url: { type: String, required: true },
+});
+
 const ModuleSchema = new mongoose.Schema(
   {
     title: {
@@ -31,6 +36,7 @@ const ModuleSchema = new mongoose.Schema(
       type: Array,
       default: [],
     },
+    readingMaterials: [ReadingMaterialSchema],
   },
   { timestamps: true }
 );

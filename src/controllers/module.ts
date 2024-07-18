@@ -14,12 +14,19 @@ export const getAllModules = async (
   next: NextFunction
 ) => {
   try {
-    const modules = await Module.find();
+    //Get sort parameter from query
+    const sortField = req.query.sort || "part";
+    const sortOrder = req.query.order === "desc" ? -1 : 1; // default to ascending order
+    const modules = await Module.find().sort({
+      [sortField.toString()]: sortOrder,
+    });
+
     res.status(200).json(modules);
   } catch (error) {
     next(error);
   }
 };
+
 //get all modules of a subCourse
 export const getModules = async (
   req: CustomRequest,
@@ -27,7 +34,11 @@ export const getModules = async (
   next: NextFunction
 ) => {
   try {
-    const modules = await Module.find({ subCourseId: req.params.subCourseId });
+    const sortField = req.query.sort || "part";
+    const sortOrder = req.query.order === "desc" ? -1 : 1; // default to ascending order
+    const modules = await Module.find({
+      subCourseId: req.params.subCourseId,
+    }).sort({ [sortField.toString()]: sortOrder });
     res.status(200).json(modules);
   } catch (error) {
     next(error);
@@ -59,7 +70,7 @@ export const createModule = async (
   try {
     const newModule = new Module(req.body);
     newModule.save();
-    res.status(201).json("Module has been created");
+    res.status(201).json({ message: "Module has been created" });
   } catch (error) {
     next(error);
   }
