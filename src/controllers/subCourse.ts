@@ -93,7 +93,12 @@ export const getAllSubCourses = async (
   next: NextFunction
 ) => {
   try {
-    const subCourses = await SubCouse.find();
+    const sortField = req.query.sort || "title";
+    const sortOrder = req.query.order === "desc" ? -1 : 1; // default to ascending order
+    const subCourses = await SubCouse.find().sort({
+      [sortField.toString()]: sortOrder,
+    });
+
     res.status(200).json(subCourses);
   } catch (error) {
     next(error);
@@ -107,7 +112,12 @@ export const getSubCourses = async (
   next: NextFunction
 ) => {
   try {
-    const subCourses = await SubCouse.find({ courseID: req.params.courseId });
+    const sortField = req.query.sort || "part";
+    const sortOrder = req.query.order === "desc" ? -1 : 1; // default to ascending order
+    const subCourses = await SubCouse.find({
+      courseID: req.params.courseId,
+    }).sort({ [sortField.toString()]: sortOrder });
+
     res.status(200).json(subCourses);
   } catch (error) {
     next(error);
