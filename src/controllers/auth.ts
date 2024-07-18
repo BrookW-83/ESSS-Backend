@@ -12,7 +12,6 @@ export const signup = async (req: Request, res: Response, next: any) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(req.body.password, salt);
     const newUser = new User({ ...req.body, password: hashedPassword });
-
     await newUser.save();
     console.log(newUser);
     res.status(201).json("User created successfully!");
