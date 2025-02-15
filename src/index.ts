@@ -9,15 +9,16 @@ import moduleRoute from "./routes/moduleRoute";
 import courseRoute from "./routes/courseRoute";
 import quizRoute from "./routes/quizRoute";
 import authRoute from "./routes/authRoute";
+import sequelize from "./sequlize"
 
-declare global {
-  namespace NodeJS {
-    interface ProcessEnv {
-      MONGO_URL: string;
-      SECRET_KEY: string;
-    }
-  }
-}
+// declare global {
+//   namespace NodeJS {
+//     interface ProcessEnv {
+//       MONGO_URL: sπtring;
+//       SECRET_KEY: string;
+//     }
+//   }
+// }
 
 const app = express();
 app.use(corsMiddleware());
@@ -25,34 +26,46 @@ app.use(express.json());
 app.use(cookieParser());
 dotenv.config();
 
-mongoose
-  .connect(process.env.MONGO_URL)
-  .then(() => {
-    console.log("connected to database");
-  })
-  .catch((error) => {
-    console.error("Error connecting to database", error);
-  });
+// mongoose
+//   .connect(process.env.MONGO_URL)
+//   .then(() => {
+//     console.log("connected to database");
+//   })
+//   .catch((error) => {
+//     console.error("Error connecting to database", error);
+//   });
 
-app.use("/api/quiz", quizRoute);
-app.use("/api/module", moduleRoute);
-app.use("/api/course", courseRoute);
-app.use("/api/subCourse", subCourseRoute);
-app.use("/api/auth", authRoute);
-app.use("/api/user", userRoute);
+// app.use("/api/quiz", quizRoute);
+// app.use("/api/module", moduleRoute);
+// app.use("/api/course", courseRoute);
+// app.use("/api/subCourse", subCourseRoute);
+// app.use("/api/auth", authRoute);
+// app.use("/api/user", userRoute);
 
-app.use((err: any, req: any, res: any, next: any) => {
-  const status = err.status || 500;
-  const message = err.message || "Something went wrong";
-  return res.status(status).json({
-    success: false,
-    status: status,
-    message: message,
+// app.use((err: any, req: any, res: any, next: any) => {
+//   const status = err.status || 500;
+//   const message = err.message || "Something went wrong";
+//   return res.status(status).json({
+//     success: false,
+//     status: status,
+//     message: message,
+//   });
+// });
+
+const PORT = process.env.PORT || 5000;
+
+sequelize.sync({ force: false }).then(() => {
+  console.log("Database synchronized successfully.");
+  app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
   });
 });
+
 app.listen(8000, () => {
   console.log("Server is running on port 8000");
 });
 function cors(): any {
   throw new Error("Function not implemented.");
 }
+
+export default app;
