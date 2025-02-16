@@ -1,5 +1,6 @@
 import { Sequelize } from "sequelize-typescript";
 import dotenv from "dotenv";
+import * as models from "../models";
 
 dotenv.config();
 
@@ -28,7 +29,7 @@ const sequelize: Sequelize = new Sequelize(
     retry: {
       max: 3,
     }, 
-
+    models: Object.values(models),
     logging: false,
   }
 );
