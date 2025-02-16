@@ -28,6 +28,8 @@ class ReadingMaterial extends Model {
   moduleId!: string;
 
   @BelongsTo(() => Module)
+  module!: Module;
+  
   @Column({
     type: DataType.STRING,
     allowNull: false,
