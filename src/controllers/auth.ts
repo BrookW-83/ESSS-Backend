@@ -1,20 +1,28 @@
 import { Request, Response } from "express";
-import User from "../models/User";
+import {User} from "../models/index";
 import bcrypt from "bcryptjs";
-import { create } from "domain";
 import { createError } from "../error";
 import jwt from "jsonwebtoken";
 
-//signup
+// signup
 export const signup = async (req: Request, res: Response, next: any) => {
-  console.log(req.body);
+  const { email, password } = req.body;
+
   try {
+    // check if user already exists
+    const existingUser = await User.findOne({where: {email}});
+
+    if (existingUser) {
+      return next(createError("User already exists!", 400));
+    }
+
+    //create new user
     const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(req.body.password, salt);
-    const newUser = new User({ ...req.body, password: hashedPassword });
-    await newUser.save();
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    const newUser = await User.create({ ...req.body, password: hashedPassword });
     console.log(newUser);
-    res.status(201).json("User created successfully!");
+    return res.status(201).json("User created successfully!");
   } catch (err) {
     next(err);
   }
@@ -22,20 +30,22 @@ export const signup = async (req: Request, res: Response, next: any) => {
 
 // sigin
 export const signin = async (req: Request, res: Response, next: any) => {
-  console.log(req.body);
+  const { email, password } = req.body;
+
+  //check if email exists
   try {
-    const user: any = await User.findOne({ email: req.body.email });
+    const user = await User.findOne({ where: email });
     if (!user) return res.status(400).json("User not found!");
 
     const isCorrectPassword = await bcrypt.compare(
-      req.body.password,
+      password,
       user.password
     );
     if (!isCorrectPassword) return next(createError("Invalid password!", 400));
 
-    const token = jwt.sign({ id: user._id }, process.env.SECRET_KEY!);
-    const { password, ...others } = user._doc;
-    res
+    const token = jwt.sign({ id: user.id, role: user.role }, process.env.SECRET_KEY!);
+    const { password:_, ...others } = user.get({plain: true});
+    return res
       .cookie("access_token", token, {
         httpOnly: true,
       })
