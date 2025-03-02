@@ -18,6 +18,8 @@ import StudentReadingMaterialProgress from "./progress/StudentReadingMaterialPro
 import StudentQuizProgress from "./progress/StudentQuizProgress";
 
 import Subscription from "./subscription/Subscription";
+import QuizAnswer from "./course/QuizAnswer";
+import QuizQuestion from "./course/QuizQuestion";
 
 export {
   User,
@@ -30,6 +32,8 @@ export {
   Video,
   ReadingMaterial,
   Quiz,
+  QuizAnswer,
+  QuizQuestion,
   StudentCourseProgress,
   StudentSubCourseProgress,
   StudentModuleProgress,

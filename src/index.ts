@@ -1,24 +1,13 @@
 import express from "express";
-import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
-import userRoute from "./routes/userRoute";
-import subCourseRoute from "./routes/subCourseRoute";
 import corsMiddleware from "cors";
-import moduleRoute from "./routes/moduleRoute";
-import courseRoute from "./routes/courseRoute";
-import quizRoute from "./routes/quizRoute";
 import authRoute from "./routes/authRoute";
 import sequelize from "./sequlize"
+import adminRoute from "./routes/adminRoute";
+import instructorRoute from "./routes/instructorRoute";
 
-// declare global {
-//   namespace NodeJS {
-//     interface ProcessEnv {
-//       MONGO_URL: sπtring;
-//       SECRET_KEY: string;
-//     }
-//   }
-// }
+
 
 const app = express();
 app.use(corsMiddleware());
@@ -26,31 +15,11 @@ app.use(express.json());
 app.use(cookieParser());
 dotenv.config();
 
-// mongoose
-//   .connect(process.env.MONGO_URL)
-//   .then(() => {
-//     console.log("connected to database");
-//   })
-//   .catch((error) => {
-//     console.error("Error connecting to database", error);
-//   });
 
-// app.use("/api/quiz", quizRoute);
-// app.use("/api/module", moduleRoute);
-// app.use("/api/course", courseRoute);
-// app.use("/api/subCourse", subCourseRoute);
-// app.use("/api/auth", authRoute);
-// app.use("/api/user", userRoute);
+app.use("/api/auth", authRoute);
+app.use("/api/instructor", instructorRoute);
+app.use("/api/admin", adminRoute);
 
-// app.use((err: any, req: any, res: any, next: any) => {
-//   const status = err.status || 500;
-//   const message = err.message || "Something went wrong";
-//   return res.status(status).json({
-//     success: false,
-//     status: status,
-//     message: message,
-//   });
-// });
 
 const PORT = process.env.PORT || 5000;
 
