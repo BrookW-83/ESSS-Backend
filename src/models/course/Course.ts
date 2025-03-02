@@ -5,7 +5,6 @@ import {
   DataType,
   PrimaryKey,
   ForeignKey,
-  BelongsTo,
 } from "sequelize-typescript";
 
 import Instructor from "../user/Instructor";
@@ -27,8 +26,6 @@ class Course extends Model {
     allowNull: false,
   })
   instructorId!: string;
-
-  @BelongsTo(() => Instructor)
 
   @Column({
     type: DataType.STRING,
@@ -67,7 +64,7 @@ class Course extends Model {
   price!: number;
 
   @Column({
-    type: DataType.NUMBER,
+    type: DataType.FLOAT,
     allowNull: false,
   })
   rating!: number;
